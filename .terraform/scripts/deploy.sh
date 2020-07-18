@@ -1,8 +1,9 @@
-$(which terraform) validate .terraform
+cd .terraform
+
+$(which terraform) validate
 
 $(which terraform) plan \
-    -out=.terraform/contoso.tfplan \
-    -var-file=.terraform/variables.tfvars \
-    .terraform
+    -out=contoso.tfplan \
+    -var-file=variables.tfvars \
 
-$(which terraform) apply .terraform/contoso.tfplan
+$(which terraform) apply contoso.tfplan
