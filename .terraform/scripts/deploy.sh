@@ -1,0 +1,1 @@
+$(which terraform) validate .terraform
