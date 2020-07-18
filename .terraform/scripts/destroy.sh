@@ -1,4 +1,4 @@
 cd .terraform
 
 $(which terraform) destroy \
-    -var-file=/variables.tfvars
+    -var-file=variables.tfvars
