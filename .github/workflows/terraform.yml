@@ -49,6 +49,7 @@ on:
     branches:
     - [ '**' ]
   pull_request:
+    - [ '**' ]
 
 jobs:
   terraform:
