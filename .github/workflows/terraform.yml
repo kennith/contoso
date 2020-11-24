@@ -46,10 +46,9 @@ name: 'Terraform'
 
 on:
   push:
-    branches:
-    - [ '**' ]
+    branches: [ '**' ]
   pull_request:
-    - [ '**' ]
+    branches: [ '**' ]
 
 jobs:
   terraform:
