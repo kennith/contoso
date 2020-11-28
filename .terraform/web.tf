@@ -18,6 +18,19 @@ data "aws_ami" "web" {
   }
 }
 
+data "aws_ami_ids" "web" {
+  owners         = ["099720109477"]
+  sort_ascending = true
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+
+output "ami_id" {
+  value = data.aws_ami_ids.web.ids[0]
+}
+
 resource "aws_key_pair" "deploy" {
   key_name   = "deployer-key"
   public_key = var.deploy_key
@@ -35,12 +48,12 @@ module "web_server_sg" {
 
 module "ec2_cluster" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "~> 2.0"
+  version = "2.15.0"
 
   name           = "web-cluster"
   instance_count = 5
 
-  ami                    = data.aws_ami.web.id
+  ami                    = data.aws_ami_ids.web.ids[0]
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.deploy.key_name
   vpc_security_group_ids = [module.web_server_sg.this_security_group_id]
