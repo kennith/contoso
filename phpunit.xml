@@ -19,6 +19,7 @@
     </filter>
     <php>
         <server name="APP_ENV" value="testing"/>
+        <server name="APP_KEY" value="base64:Zi9x6FCgu7kiBVL2rvKfbVJ2lf9WeGR+fSHHb2IZK5A="/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="DB_CONNECTION" value="sqlite"/>
