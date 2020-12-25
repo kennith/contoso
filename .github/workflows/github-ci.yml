@@ -66,4 +66,4 @@ jobs:
 
     steps:
     - name: deploy
-      run:
+      run: echo 'deploy'
