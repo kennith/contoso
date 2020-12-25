@@ -1,0 +1,70 @@
+name: github-ci
+
+on:
+  push:
+    branches: [ 'master' ]
+    tags: ['**']
+  pull_request:
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: run tests
+      run: .ci/tests/phpunit.sh
+
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: cd .terraform && terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: ./.terraform/scripts/test.sh
+
+  build:
+    name: build
+    needs: [phpunit, terraform]
+    if: contains('tags', github.event_name) || contains('push', github.event_name)
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: the reference name
+      run: echo $GITHUB_REF
+    - name: pull out the source
+      run: git archive $GITHUB_REF
+
+  stage:
+    name: staging
+    needs: [phpunit, terraform, build]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: staging
+      run: echo "wip"
+
+  deploy:
+    name: deploy
+    needs: [phpunit, terraform, stage]
+    runs-on: ubuntu-latest
+    if: contains('tags', github.event_name)
+
+    steps:
+    - name: deploy
+      run: echo "deploy tag $GITHUB_REF"
