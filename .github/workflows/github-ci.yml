@@ -46,9 +46,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: the reference name
-      run: echo ${{ GITHUB_REF }}
+      run: echo $GITHUB_REF
     - name: pull out the source
-      run: git archive ${{ GITHUB_REF }}
+      run: git archive $GITHUB_REF
 
   stage:
     name: staging
