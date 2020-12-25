@@ -2,7 +2,7 @@ name: github-ci
 
 on:
   push:
-    branches: [ 'master', 'issues/*' ]
+    branches: [ 'master' ]
     tags: ['**']
   pull_request:
 
