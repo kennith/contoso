@@ -63,7 +63,8 @@ jobs:
     name: deploy
     needs: [phpunit, terraform, stage]
     runs-on: ubuntu-latest
+    if: contains('tags', github.event_name)
 
     steps:
     - name: deploy
-      run: echo 'deploy'
+      run: echo "deploy tag $GITHUB_REF"
