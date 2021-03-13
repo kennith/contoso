@@ -1,4 +1,4 @@
-variable "GIT_SHA" {
-    type = string
-    default = env("GITHUB_SHA")
+variables {
+    GIT_SHA=env("GITHUB_SHA")
+    APP_NAME=env("APP_NAME")
 }
