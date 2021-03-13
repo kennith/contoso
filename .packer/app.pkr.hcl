@@ -68,4 +68,11 @@ build {
         ]
     }
 
+    provisioner "shell" {
+        inline = [
+            "echo >> APP_NAME=${var.APP_NAME} /var/www/.env",
+            "echo >> APP_KEY=$(php /var/www/artisan key:generate --show) /var/www/.env",
+        ]
+    }
+
 }
