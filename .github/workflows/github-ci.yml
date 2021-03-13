@@ -15,6 +15,13 @@ jobs:
     - name: run tests
       run: .ci/tests/phpunit.sh
 
+  packer:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: packer test
+      run: .ci/tests/packer.sh
+
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
@@ -39,7 +46,7 @@ jobs:
 
   build:
     name: build
-    needs: [phpunit, terraform]
+    needs: [phpunit, terraform, packer]
     if: contains('tags', github.event_name) || contains('push', github.event_name)
     runs-on: ubuntu-20.04
 
@@ -52,7 +59,7 @@ jobs:
 
   stage:
     name: staging
-    needs: [phpunit, terraform, build]
+    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
@@ -61,7 +68,7 @@ jobs:
 
   deploy:
     name: deploy
-    needs: [phpunit, terraform, stage]
+    needs: [build]
     runs-on: ubuntu-latest
     if: contains('tags', github.event_name)
 
