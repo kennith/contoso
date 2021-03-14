@@ -27,10 +27,10 @@ build {
         inline = [
             "echo Only AWS"
         ]
+        pause_before = "15s"
     }
 
     provisioner "shell" {
-        only = ["vagrant.app"]
         script = ".packer/scripts/app.sh"
     }
 
