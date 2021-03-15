@@ -39,20 +39,6 @@ build {
         script = ".packer/scripts/app.sh"
     }
 
-    # transfer app tar.gz from source to image
-    provisioner "file" {
-        source = "${var.GIT_SHA}.tar.gz"
-        destination = "/tmp/${var.GIT_SHA}.tar.gz"
-    }
-
-    provisioner "shell" {
-        inline = [
-            "sudo rm -rf /var/www/",
-            "sudo mkdir /var/www/",
-            "sudo chown $(whoami):$(whoami) /var/www/",
-            "tar xf /tmp/${var.GIT_SHA}.tar.gz --directory=/var/www"
-        ]
-    }
 
     provisioner "file" {
         source = ".packer/etc"
@@ -73,8 +59,25 @@ build {
         ]
     }
 
+    # transfer app tar.gz from source to image
+    provisioner "file" {
+        source = "${var.GIT_SHA}.tar.gz"
+        destination = "/tmp/${var.GIT_SHA}.tar.gz"
+    }
+
     provisioner "shell" {
         inline = [
+            "sudo rm -rf /var/www/",
+            "sudo mkdir /var/www/",
+            "sudo chown $(whoami):$(whoami) /var/www/",
+            "tar xf /tmp/${var.GIT_SHA}.tar.gz --directory=/var/www",
+        ]
+    }
+
+    // Setup Laravel application
+    provisioner "shell" {
+        inline = [
+            "cd /var/www && composer install",
             "echo >> APP_NAME=${var.APP_NAME} /var/www/.env",
             "echo >> APP_KEY=$(php /var/www/artisan key:generate --show) /var/www/.env",
         ]
