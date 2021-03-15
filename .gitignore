@@ -4,6 +4,8 @@
 /storage/*.key
 /vendor
 /.vscode
+/output-app
+/*.tar.gz
 .env
 .env.backup
 .phpunit.result.cache
