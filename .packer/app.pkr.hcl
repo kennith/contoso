@@ -80,9 +80,9 @@ build {
     // Setup Laravel application
     provisioner "shell" {
         inline = [
-            "cd /var/www && composer install",
-            "echo >> APP_NAME=${var.APP_NAME} /var/www/.env",
-            "echo >> APP_KEY=$(php /var/www/artisan key:generate --show) /var/www/.env",
+            "cd /var/www && composer install --no-dev --no-suggest --no-progress -q",
+            "echo APP_NAME=${var.APP_NAME} >> /var/www/.env",
+            "echo APP_KEY=$(php /var/www/artisan key:generate --show) >> /var/www/.env",
         ]
     }
 
