@@ -5,3 +5,4 @@ sudo apt-get -yqq install \
     php \
     php-mysql \
     php-xml \
+    php-mbstring
