@@ -39,6 +39,9 @@ build {
         script = ".packer/scripts/app.sh"
     }
 
+    provisioner "shell" {
+        script = ".packer/scripts/install-composer.sh"
+    }
 
     provisioner "file" {
         source = ".packer/etc"
@@ -50,8 +53,8 @@ build {
             "sudo mv /tmp/etc/apache2/envvars /etc/apache2/envvars",
             "sudo mv /tmp/etc/apache2/ports.conf /etc/apache2/ports.conf",
             "sudo mv /tmp/etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf",
-            "sudo echo APACHE_RUN_USER=$(whoami) >> /etc/apache2/envvars",
-            "sudo echo APACHE_RUN_GROUP=$(whoami) >> /etc/apache2/envvars",
+            "sudo echo export APACHE_RUN_USER=$(whoami) >> /etc/apache2/envvars",
+            "sudo echo export APACHE_RUN_GROUP=$(whoami) >> /etc/apache2/envvars",
             "sudo a2dissite 000-default",
             "sudo a2ensite default-ssl",
             "sudo a2enmod rewrite",
@@ -77,9 +80,9 @@ build {
     // Setup Laravel application
     provisioner "shell" {
         inline = [
-            "cd /var/www && composer install",
-            "echo >> APP_NAME=${var.APP_NAME} /var/www/.env",
-            "echo >> APP_KEY=$(php /var/www/artisan key:generate --show) /var/www/.env",
+            "cd /var/www && composer install --no-dev --no-suggest --no-progress -q",
+            "echo APP_NAME=${var.APP_NAME} >> /var/www/.env",
+            "echo APP_KEY=$(php /var/www/artisan key:generate --show) >> /var/www/.env",
         ]
     }
 
