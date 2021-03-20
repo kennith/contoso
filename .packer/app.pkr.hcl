@@ -39,6 +39,9 @@ build {
         script = ".packer/scripts/app.sh"
     }
 
+    provisioner "shell" {
+        script = ".packer/scripts/install-composer.sh"
+    }
 
     provisioner "file" {
         source = ".packer/etc"
