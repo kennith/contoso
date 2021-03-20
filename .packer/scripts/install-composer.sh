@@ -16,4 +16,4 @@ RESULT=$?
 rm composer-setup.php
 exit $RESULT
 
-sudo mv composer.php /usr/local/bin/composer
+sudo mv composer.phar /usr/local/bin/composer
